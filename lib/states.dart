@@ -9,6 +9,12 @@ class SelectedFoodsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<FoodModel> get getFoodModels => foodModels;
+
+  void printData() {
+    foodModels.forEach((element) => print(element.getName));
+  }
+
   bool contains(FoodModel order) {
     return foodModels.contains(order);
   }

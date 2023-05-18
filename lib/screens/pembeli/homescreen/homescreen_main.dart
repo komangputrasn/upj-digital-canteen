@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:upj_digital_canteen/checkout.dart';
+import 'package:upj_digital_canteen/screens/pembeli/checkout/checkout_main.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/advert_carousel.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/app_bar.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/drawer.dart';

@@ -196,7 +196,8 @@ class _FoodCardModalBottomSheetState extends State<FoodCardModalBottomSheet> {
   String buttonText = 'Add to cart';
   @override
   Widget build(BuildContext context) {
-    var selectedFoodsProvider = Provider.of<SelectedFoodsProvider>(context);
+    var selectedFoodsProvider =
+        Provider.of<SelectedFoodsProvider>(context, listen: false);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -244,7 +245,10 @@ class _FoodCardModalBottomSheetState extends State<FoodCardModalBottomSheet> {
                   widget.imageUrl,
                 );
 
+                print(selectedFoodsProvider.contains(currentModel));
+
                 if (selectedFoodsProvider.contains(currentModel)) {
+                  print('it contains..');
                   buttonText = 'Remove from cart';
                   selectedFoodsProvider.removeOrder(currentModel);
 
@@ -267,6 +271,7 @@ class _FoodCardModalBottomSheetState extends State<FoodCardModalBottomSheet> {
                   return;
                 }
 
+                selectedFoodsProvider.printData();
                 selectedFoodsProvider.addOrder(
                   FoodModel(widget.foodName, widget.price, widget.imageUrl),
                 );
