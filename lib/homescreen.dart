@@ -312,11 +312,10 @@ class FoodCard extends StatelessWidget {
                 imageUrl,
               ),
             );
-            showBottomSheet(
+            showModalBottomSheet(
               context: context,
-              builder: (context) => Center(
-                child: Text('Hello'),
-              ),
+              builder: (context) => FoodCardModalBottomSheet(
+                  imageUrl: imageUrl, foodName: foodName, price: price),
             );
           },
           child: Column(
@@ -345,6 +344,100 @@ class FoodCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class FoodCardModalBottomSheet extends StatelessWidget {
+  const FoodCardModalBottomSheet({
+    super.key,
+    required this.imageUrl,
+    required this.foodName,
+    required this.price,
+  });
+
+  final String imageUrl;
+  final String foodName;
+  final String price;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 25,
+            ),
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(imageUrl),
+                  backgroundColor: Color(kThemeColor),
+                  minRadius: 40,
+                ),
+                SizedBox(
+                  width: 25,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      foodName,
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      price,
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(
+              height: 35,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      children: [
+                        Icon(
+                          Icons.done,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text('$foodName is added to the cart'),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(350, 40),
+                backgroundColor: Color(kThemeColor),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                ),
+              ),
+              child: Text('Add to cart'),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+          ],
         ),
       ),
     );
