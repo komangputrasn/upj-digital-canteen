@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "602978698166",
+    "project_id": "upj-digital-canteen-13676",
+    "storage_bucket": "upj-digital-canteen-13676.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602978698166:android:abfda635e3918843a7b717",
+        "android_client_info": {
+          "package_name": "com.example.upj_digital_canteen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602978698166-mtlll90earfh44noej94ej3ahlmdimle.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdCCPh6bvC0TSpBDOSNzgKae7gj2J5hEE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602978698166-mtlll90earfh44noej94ej3ahlmdimle.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
