@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/constants.dart';
-import 'package:upj_digital_canteen/homescreen.dart';
+import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatelessWidget {

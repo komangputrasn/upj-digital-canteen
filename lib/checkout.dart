@@ -1,7 +1,7 @@
 import 'package:cart_stepper/cart_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:upj_digital_canteen/homescreen.dart';
+import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
 import 'package:upj_digital_canteen/models.dart';
 import 'constants.dart';
 import 'states.dart';
@@ -258,7 +258,7 @@ class ProceedPaymentBottomSheet extends StatelessWidget {
 class OrderCards extends StatefulWidget {
   const OrderCards({super.key, required this.model, required this.index});
 
-  final OrderModel model;
+  final FoodModel model;
   final int index;
 
   @override

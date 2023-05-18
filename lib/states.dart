@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/models.dart';
 
 class SelectedFoodsProvider extends ChangeNotifier {
-  List<OrderModel> orderModels = [];
+  List<FoodModel> foodModels = [];
 
-  void addOrder(OrderModel order) {
-    orderModels.add(order);
+  void addOrder(FoodModel order) {
+    foodModels.add(order);
     notifyListeners();
   }
 
-  bool contains(OrderModel order) {
-    return orderModels.contains(order);
+  bool contains(FoodModel order) {
+    return foodModels.contains(order);
   }
 
-  void removeOrder(OrderModel model) {
+  void removeOrder(FoodModel model) {
     print(model.getName);
-    orderModels.remove(model);
+    foodModels.remove(model);
     notifyListeners();
   }
 }

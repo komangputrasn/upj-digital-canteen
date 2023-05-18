@@ -1,5 +1,5 @@
-class OrderModel {
-  OrderModel(this.name, this.harga, this.imageUrl);
+class FoodModel {
+  FoodModel(this.name, this.harga, this.imageUrl);
 
   String name;
   String harga;

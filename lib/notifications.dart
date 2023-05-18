@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/constants.dart';
-import 'package:upj_digital_canteen/homescreen.dart';
+import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
 import 'utils.dart';
 
 class NotificationsPage extends StatelessWidget {
