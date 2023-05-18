@@ -18,7 +18,7 @@ class Checkout extends StatefulWidget {
 class _CheckoutState extends State<Checkout> {
   @override
   Widget build(BuildContext context) {
-    var orders = [];
+    var orders = Provider.of<SelectedFoodsProvider>(context).foodModels;
     return Scaffold(
       body: CustomScrollView(
         slivers: [

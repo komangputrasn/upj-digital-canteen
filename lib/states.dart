@@ -11,17 +11,12 @@ class SelectedFoodsProvider extends ChangeNotifier {
 
   List<FoodModel> get getFoodModels => foodModels;
 
-  void printData() {
-    foodModels.forEach((element) => print(element.getName));
-  }
-
   bool contains(FoodModel order) {
     return foodModels.contains(order);
   }
 
-  void removeOrder(FoodModel model) {
-    print(model.getName);
-    foodModels.remove(model);
+  void removeOrder(int index) {
+    foodModels.removeAt(index);
     notifyListeners();
   }
 }

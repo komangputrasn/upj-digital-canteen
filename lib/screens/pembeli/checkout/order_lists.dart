@@ -14,7 +14,7 @@ class NoOrdersContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Center(
-        child: Image.asset('assets/ilus/empty_cart.png'),
+        child: Text('Anda belum memesan makanan!'),
       ),
     );
   }
@@ -62,8 +62,7 @@ class _OrderCardsState extends State<OrderCards> {
       child: Dismissible(
         onDismissed: (_) {
           print('this widget is removed');
-          Provider.of<SelectedFoodsProvider>(context, listen: false)
-              .removeOrder(widget.model);
+          Provider.of<SelectedFoodsProvider>(context).removeOrder(widget.index);
         },
         key: Key(widget.index.toString()),
         child: Container(
@@ -104,20 +103,34 @@ class _OrderCardsState extends State<OrderCards> {
                     SizedBox(
                       height: 10,
                     ),
-                    CartStepperInt(
-                      value: _counter,
-                      axis: Axis.horizontal,
-                      didChangeCount: (count) {
-                        setState(() {
-                          _counter = count;
-
-                          if (count == 0) {
-                            Provider.of<SelectedFoodsProvider>(context,
-                                    listen: false)
-                                .removeOrder(widget.model);
-                          }
-                        });
-                      },
+                    Row(
+                      children: [
+                        CartStepperInt(
+                          value: _counter,
+                          axis: Axis.horizontal,
+                          didChangeCount: (count) {
+                            setState(
+                              () {
+                                _counter = (count < 1) ? 1 : count;
+                              },
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Provider.of<SelectedFoodsProvider>(
+                              context,
+                              listen: false,
+                            ).removeOrder(widget.index);
+                          },
+                          icon: Icon(Icons.delete_outline),
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(),
+                        ),
+                      ],
                     ),
                   ],
                 )

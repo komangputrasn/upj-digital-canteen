@@ -130,13 +130,6 @@ class FoodCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            Provider.of<SelectedFoodsProvider>(context, listen: false).addOrder(
-              FoodModel(
-                foodName,
-                price,
-                imageUrl,
-              ),
-            );
             showModalBottomSheet(
               context: context,
               builder: (context) => FoodCardModalBottomSheet(
@@ -196,8 +189,6 @@ class _FoodCardModalBottomSheetState extends State<FoodCardModalBottomSheet> {
   String buttonText = 'Add to cart';
   @override
   Widget build(BuildContext context) {
-    var selectedFoodsProvider =
-        Provider.of<SelectedFoodsProvider>(context, listen: false);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -239,43 +230,9 @@ class _FoodCardModalBottomSheetState extends State<FoodCardModalBottomSheet> {
             ),
             ElevatedButton(
               onPressed: () {
-                var currentModel = FoodModel(
-                  widget.foodName,
-                  widget.price,
-                  widget.imageUrl,
-                );
-
-                print(selectedFoodsProvider.contains(currentModel));
-
-                if (selectedFoodsProvider.contains(currentModel)) {
-                  print('it contains..');
-                  buttonText = 'Remove from cart';
-                  selectedFoodsProvider.removeOrder(currentModel);
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Row(
-                        children: [
-                          Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text('${widget.foodName} is removed from the cart'),
-                        ],
-                      ),
-                    ),
-                  );
-                  return;
-                }
-
-                selectedFoodsProvider.printData();
-                selectedFoodsProvider.addOrder(
-                  FoodModel(widget.foodName, widget.price, widget.imageUrl),
-                );
-
+                Provider.of<SelectedFoodsProvider>(context, listen: false)
+                    .addOrder(FoodModel(
+                        widget.foodName, widget.price, widget.imageUrl));
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
