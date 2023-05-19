@@ -1,13 +1,14 @@
 /// goals:
-/// 1. update the checkout page to reflect the correct subtotal for each order menus
-/// 2. do the same for the bottom modal sheet
+/// 1. update the checkout page to reflect the correct subtotal for each order menus (done)
+/// 2. do the same for the bottom modal sheet (done)
 /// 3. send the checkout to the ongoing
-/// 4. prevent duplicate items
+/// 4. prevent duplicate items (done)
 /// 5. create the about us page
 /// 6. enable file picker
 /// 7. add validation to forms in edit profile
 /// 8. connect to DB for login/signup
-/// 9. unfocus textfield when dismissing keyboard (done )
+/// 9. unfocus textfield when dismissing keyboard (done)
+/// TODO: make sure there are no duplicates name for foods
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -190,6 +190,8 @@ class _FoodCardModalBottomSheetState extends State<FoodCardModalBottomSheet> {
   String buttonText = 'Add to cart';
   @override
   Widget build(BuildContext context) {
+    var selectedFoodProvider =
+        Provider.of<SelectedFoodsProvider>(context, listen: false);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -229,40 +231,106 @@ class _FoodCardModalBottomSheetState extends State<FoodCardModalBottomSheet> {
             SizedBox(
               height: 35,
             ),
-            ElevatedButton(
-              onPressed: () {
-                Provider.of<SelectedFoodsProvider>(context, listen: false)
-                    .addOrder(FoodModel(
-                        widget.foodName, widget.price, widget.imageUrl));
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Row(
+            !selectedFoodProvider.contains(widget.foodName)
+                ? ElevatedButton(
+                    onPressed: () {
+                      selectedFoodProvider.addOrder(
+                        FoodModel(
+                          widget.foodName,
+                          widget.price,
+                          widget.imageUrl,
+                        ),
+                      );
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Row(
+                            children: [
+                              Icon(
+                                Icons.done,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text('${widget.foodName} is added to the cart'),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(350, 40),
+                      backgroundColor: Color(kThemeColor),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.done,
-                          color: Colors.white,
-                        ),
+                        Icon(Icons.add),
                         SizedBox(
-                          width: 10,
+                          width: 7,
                         ),
-                        Text('${widget.foodName} is added to the cart'),
+                        Text(
+                          buttonText,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    // child: Text(buttonText),
+                  )
+                : TextButton(
+                    onPressed: () {
+                      selectedFoodProvider.removeOrderByName(widget.foodName);
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Row(
+                            children: [
+                              Icon(
+                                Icons.close,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                  '${widget.foodName} is removed from the cart'),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      minimumSize: Size(350, 40),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 2),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50),
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.close),
+                        SizedBox(
+                          width: 7,
+                        ),
+                        Text(
+                          'Remove from cart',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(350, 40),
-                backgroundColor: Color(kThemeColor),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50),
-                  ),
-                ),
-              ),
-              child: Text(buttonText),
-            ),
             SizedBox(
               height: 20,
             ),

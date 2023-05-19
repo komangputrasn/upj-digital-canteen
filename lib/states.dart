@@ -13,8 +13,8 @@ class SelectedFoodsProvider extends ChangeNotifier {
 
   List<FoodModel> get getFoodModels => foodModels;
 
-  bool contains(FoodModel order) {
-    return foodModels.contains(order);
+  bool contains(String foodName) {
+    return foodModels.any((element) => element.getName == foodName);
   }
 
   void modifySubtotal(int itemIndex, int multiplier) {
@@ -26,10 +26,20 @@ class SelectedFoodsProvider extends ChangeNotifier {
     return itemSubtotals[itemIndex];
   }
 
-  void removeOrder(int index) {
+  void removeOrderByIndex(int index) {
     foodModels.removeAt(index);
     itemSubtotals.removeAt(index);
     notifyListeners();
+  }
+
+  void removeOrder(FoodModel model) {
+    removeOrderByIndex(foodModels.indexOf(model));
+  }
+
+  void removeOrderByName(String foodName) {
+    foodModels.removeWhere(
+      (element) => (element.getName == foodName),
+    );
   }
 
   int getTotalCost() {

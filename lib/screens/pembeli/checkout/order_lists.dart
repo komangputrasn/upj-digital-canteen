@@ -122,7 +122,7 @@ class _OrderCardsState extends State<OrderCards> {
                       ),
                       IconButton(
                         onPressed: () {
-                          selectedFoodProvider.removeOrder(widget.index);
+                          selectedFoodProvider.removeOrderByIndex(widget.index);
                         },
                         icon: Icon(Icons.delete_outline),
                         padding: EdgeInsets.zero,
