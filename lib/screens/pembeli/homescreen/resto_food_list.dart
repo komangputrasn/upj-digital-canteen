@@ -84,7 +84,8 @@ class _RestoFoodListState extends State<RestoFoodList> {
                           padding: const EdgeInsets.only(right: 20.0),
                           child: FoodCard(
                             foodName: restoData[restoIndex][foodIndex][0],
-                            price: 'Rp${restoData[restoIndex][foodIndex][1]}',
+                            price:
+                                int.parse(restoData[restoIndex][foodIndex][1]),
                             imageUrl: foodImgPath[restoIndex][foodIndex],
                           ),
                         ),
@@ -111,7 +112,7 @@ class FoodCard extends StatelessWidget {
   });
 
   final String foodName;
-  final String price;
+  final int price;
   final String imageUrl;
 
   @override
@@ -156,7 +157,7 @@ class FoodCard extends StatelessWidget {
                     SizedBox(
                       height: 15,
                     ),
-                    Text(price),
+                    Text('Rp${price.toString()}'),
                   ],
                 ),
               ),
@@ -178,7 +179,7 @@ class FoodCardModalBottomSheet extends StatefulWidget {
 
   final String imageUrl;
   final String foodName;
-  final String price;
+  final int price;
 
   @override
   State<FoodCardModalBottomSheet> createState() =>
@@ -218,7 +219,7 @@ class _FoodCardModalBottomSheetState extends State<FoodCardModalBottomSheet> {
                       ),
                     ),
                     Text(
-                      widget.price,
+                      'Rp${widget.price}',
                       style: TextStyle(fontSize: 17),
                     ),
                   ],

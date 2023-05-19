@@ -7,8 +7,8 @@
 /// 6. enable file picker
 /// 7. add validation to forms in edit profile
 /// 8. connect to DB for login/signup
-/// 9. unfocus textfield when dismissing keyboard
-///
+/// 9. unfocus textfield when dismissing keyboard (done )
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -16,11 +16,11 @@ import 'login.dart';
 import 'states.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => SelectedFoodsProvider(),
-      child: MyApp(),
-    ),
+  MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => SelectedFoodsProvider()),
+    ],
+    child: MyApp(),
   );
 }
 

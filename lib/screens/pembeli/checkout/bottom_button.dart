@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:upj_digital_canteen/states.dart';
 
 class BottomNavBarButton extends StatelessWidget {
   const BottomNavBarButton({
@@ -40,6 +42,8 @@ class ProceedPaymentBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var selectedFoodProvider =
+        Provider.of<SelectedFoodsProvider>(context, listen: false);
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(20),
@@ -66,7 +70,7 @@ class ProceedPaymentBottomSheet extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Rp30.000',
+                  'Rp${selectedFoodProvider.getTotalCost()}',
                   style: TextStyle(
                     fontSize: 18,
                   ),
@@ -90,7 +94,7 @@ class ProceedPaymentBottomSheet extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Rp30.000',
+                  'Rp${selectedFoodProvider.getTotalCost()}',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

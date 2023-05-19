@@ -57,85 +57,82 @@ class _OrderCardsState extends State<OrderCards> {
 
   @override
   Widget build(BuildContext context) {
+    var selectedFoodProvider =
+        Provider.of<SelectedFoodsProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 20, bottom: 15),
-      child: Dismissible(
-        onDismissed: (_) {
-          print('this widget is removed');
-          Provider.of<SelectedFoodsProvider>(context).removeOrder(widget.index);
-        },
-        key: Key(widget.index.toString()),
-        child: Container(
-          height: 120,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: Color.fromARGB(81, 205, 4, 48),
-            ),
+      child: Container(
+        height: 120,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: Color.fromARGB(81, 205, 4, 48),
           ),
-          child: Padding(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Color(kThemeColor),
-                  backgroundImage: NetworkImage(widget.model.getImageUrl),
-                  minRadius: 35,
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.model.getName,
-                      softWrap: true,
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: Color(kThemeColor),
+                backgroundImage: NetworkImage(widget.model.getImageUrl),
+                minRadius: 35,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.model.getName,
+                    softWrap: true,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                      'Rp ${selectedFoodProvider.getItemSubtotal(widget.index)}'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      CartStepperInt(
+                        value: _counter,
+                        axis: Axis.horizontal,
+                        didChangeCount: (count) {
+                          setState(
+                            () {
+                              _counter = (count < 1) ? 1 : count;
+                              selectedFoodProvider.modifySubtotal(
+                                widget.index,
+                                _counter,
+                              );
+                            },
+                          );
+                        },
                       ),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Text(widget.model.getHarga),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        CartStepperInt(
-                          value: _counter,
-                          axis: Axis.horizontal,
-                          didChangeCount: (count) {
-                            setState(
-                              () {
-                                _counter = (count < 1) ? 1 : count;
-                              },
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            Provider.of<SelectedFoodsProvider>(
-                              context,
-                              listen: false,
-                            ).removeOrder(widget.index);
-                          },
-                          icon: Icon(Icons.delete_outline),
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          selectedFoodProvider.removeOrder(widget.index);
+                        },
+                        icon: Icon(Icons.delete_outline),
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),

@@ -14,7 +14,6 @@ class Checkout extends StatefulWidget {
   @override
   State<Checkout> createState() => _CheckoutState();
 }
-
 class _CheckoutState extends State<Checkout> {
   @override
   Widget build(BuildContext context) {
