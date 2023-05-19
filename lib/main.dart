@@ -1,7 +1,17 @@
+/// goals:
+/// 1. update the checkout page to reflect the correct subtotal for each order menus
+/// 2. do the same for the bottom modal sheet
+/// 3. send the checkout to the ongoing
+/// 4. prevent duplicate items
+/// 5. create the about us page
+/// 6. enable file picker
+/// 7. add validation to forms in edit profile
+/// 8. connect to DB for login/signup
+/// 9. unfocus textfield when dismissing keyboard
+///
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:upj_digital_canteen/constants.dart';
 import 'login.dart';
 import 'states.dart';
 

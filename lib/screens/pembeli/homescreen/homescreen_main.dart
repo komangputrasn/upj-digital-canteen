@@ -16,30 +16,40 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: Drawer(
-        child: DrawerView(),
-      ),
-      backgroundColor: Colors.red.shade50,
-      body: CustomScrollView(
-        slivers: [
-          HomeAppBar(),
-          SearchBar(),
-          AdvertCarousel(),
-          PickUp(),
-          RestoFoodList(),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(kThemeColor),
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => Checkout(),
-            ),
-          );
-        },
-        child: Icon(Icons.shopping_cart),
+    return Listener(
+      // this is to remove focus when the keyboard is dismissed
+      onPointerDown: (event) {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
+          currentFocus.focusedChild?.unfocus();
+        }
+      },
+      child: Scaffold(
+        drawer: Drawer(
+          child: DrawerView(),
+        ),
+        backgroundColor: Colors.red.shade50,
+        body: CustomScrollView(
+          slivers: [
+            HomeAppBar(),
+            SearchBar(),
+            AdvertCarousel(),
+            PickUp(),
+            RestoFoodList(),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Color(kThemeColor),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => Checkout(),
+              ),
+            );
+          },
+          child: Icon(Icons.shopping_cart),
+        ),
       ),
     );
   }
