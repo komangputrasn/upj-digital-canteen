@@ -17,3 +17,17 @@ class FoodModel {
     return imageUrl;
   }
 }
+
+class ConfirmedFoodModel {
+  ConfirmedFoodModel(this.name, this.price, this.imageUrl, this.quantity);
+
+  String name;
+  int price;
+  String imageUrl;
+  int quantity;
+
+  String get getName => name;
+  int get getPrice => price;
+  String get getImageUrl => imageUrl;
+  int get getQuantity => quantity;
+}

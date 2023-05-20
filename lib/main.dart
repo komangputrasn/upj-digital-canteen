@@ -17,11 +17,15 @@ import 'login.dart';
 import 'states.dart';
 
 void main() {
-  MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => SelectedFoodsProvider()),
-    ],
-    child: MyApp(),
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => SelectedFoodsProvider(),
+        ),
+      ],
+      child: MyApp(),
+    ),
   );
 }
 

@@ -37,6 +37,14 @@ class SelectedFoodsProvider extends ChangeNotifier {
   }
 
   void removeOrderByName(String foodName) {
+    itemSubtotals.removeAt(
+      foodModels.indexOf(
+        foodModels.firstWhere(
+          (element) => element.getName == foodName,
+        ),
+      ),
+    );
+
     foodModels.removeWhere(
       (element) => (element.getName == foodName),
     );
@@ -45,4 +53,15 @@ class SelectedFoodsProvider extends ChangeNotifier {
   int getTotalCost() {
     return itemSubtotals.reduce((value, element) => value + element);
   }
+
+  bool isNotEmpty() {
+    return foodModels.isNotEmpty;
+  }
+}
+
+class ConfimedFoodsProvider extends ChangeNotifier {
+  List<ConfirmedFoodModel> _confirmedFoods = [];
+
+  void addFromSelectedFoodsList(
+      List<FoodModel> selectedFoods, List<int> subTotals) {}
 }
