@@ -10,13 +10,18 @@
 /// 9. unfocus textfield when dismissing keyboard (done)
 /// TODO: make sure there are no duplicates name for foods
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
 import 'login.dart';
 import 'states.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MultiProvider(
       providers: [
@@ -41,7 +46,16 @@ class MyApp extends StatelessWidget {
         primarySwatch: createMaterialColor(Color(0xffcd042e)),
         fontFamily: GoogleFonts.poppins().fontFamily,
       ),
-      home: LoginScreen(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return HomeScreen();
+          } else {
+            return LoginScreen();
+          }
+        },
+      ),
     );
   }
 }

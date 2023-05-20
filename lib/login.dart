@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/constants.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
 import 'package:upj_digital_canteen/signup.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final emailTextEditingController = TextEditingController();
+  final passwordTextEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,44 +35,149 @@ class LoginScreen extends StatelessWidget {
             SizedBox(
               height: 30,
             ),
-            TextField(
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                prefixIcon: Icon(Icons.email),
-              ),
-            ),
+            emailTextField(),
             SizedBox(
               height: 30,
             ),
-            TextField(
-              textAlignVertical: TextAlignVertical.center,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                prefixIcon: Icon(Icons.password),
-              ),
-            ),
+            passwordTextField(),
             SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                LoginButton(),
-                SignupButton(),
+                Material(
+                  child: InkWell(
+                    onTap: () async {
+                      if (!allFieldsAreFilled()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please fill all fields!'),
+                          ),
+                        );
+                        return;
+                      }
+
+                      try {
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                          email: emailTextEditingController.text,
+                          password: passwordTextEditingController.text,
+                        );
+                      } on FirebaseAuthException catch (e) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => SimpleDialog(
+                            title: Text('Error'),
+                            contentPadding: EdgeInsets.all(20),
+                            children: [
+                              Text(e.message!),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Close'),
+                              ),
+                            ],
+                          ),
+                        );
+                        // print(e.message);
+                      }
+
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => HomeScreen(),
+                      //   ),
+                      // );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Color(kThemeColor),
+                      ),
+                      height: 50,
+                      width: 180,
+                      child: Center(
+                        child: Text(
+                          'Continue',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Material(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SignupPage(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: Colors.pink),
+                      ),
+                      height: 50,
+                      width: 180,
+                      child: Center(
+                        child: Text(
+                          'I want to sign up',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Color(kThemeColor),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             )
           ],
         ),
       ),
     );
+  }
+
+  TextField passwordTextField() {
+    return TextField(
+      controller: passwordTextEditingController,
+      textAlignVertical: TextAlignVertical.center,
+      obscureText: true,
+      decoration: InputDecoration(
+        labelText: 'Password',
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        prefixIcon: Icon(Icons.password),
+      ),
+    );
+  }
+
+  TextField emailTextField() {
+    return TextField(
+      controller: emailTextEditingController,
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+        labelText: 'Email',
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        prefixIcon: Icon(Icons.email),
+      ),
+    );
+  }
+
+  bool allFieldsAreFilled() {
+    return emailTextEditingController.text.isNotEmpty &&
+        passwordTextEditingController.text.isNotEmpty;
   }
 }
 

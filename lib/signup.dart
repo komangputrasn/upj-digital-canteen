@@ -1,10 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/constants.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
 import 'package:upj_digital_canteen/login.dart';
 
 class SignupPage extends StatelessWidget {
-  const SignupPage({super.key});
+  SignupPage({super.key});
+
+  final emailTextFieldController = TextEditingController();
+  final nameTextFieldController = TextEditingController();
+  final passwordTextFieldController = TextEditingController();
+  final confirmPasswordTextFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,65 +59,23 @@ class SignupPage extends StatelessWidget {
               SizedBox(
                 height: 25,
               ),
-              TextField(
-                textAlignVertical: TextAlignVertical.center,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  prefixIcon: Icon(Icons.email),
-                ),
-              ),
+              _emailTextField(),
               SizedBox(
                 height: 25,
               ),
-              TextField(
-                textAlignVertical: TextAlignVertical.center,
-                decoration: InputDecoration(
-                  labelText: 'Name',
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  prefixIcon: Icon(Icons.person),
-                ),
-              ),
+              _nameTextField(),
               SizedBox(
                 height: 25,
               ),
-              TextField(
-                textAlignVertical: TextAlignVertical.center,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  prefixIcon: Icon(Icons.password),
-                ),
-              ),
+              _passwordTextField(),
               SizedBox(height: 25),
-              TextField(
-                textAlignVertical: TextAlignVertical.center,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  prefixIcon: Icon(Icons.password),
-                ),
-              ),
+              _confirmPasswordTextField(),
               SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ContinueButton(),
-                  LoginButton(),
+                  _continueButton(context),
+                  _goToSignInButton(context),
                 ],
               )
             ],
@@ -119,15 +84,8 @@ class SignupPage extends StatelessWidget {
       ),
     );
   }
-}
 
-class LoginButton extends StatelessWidget {
-  const LoginButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Material _goToSignInButton(BuildContext context) {
     return Material(
       child: InkWell(
         onTap: () {
@@ -158,18 +116,32 @@ class LoginButton extends StatelessWidget {
       ),
     );
   }
-}
 
-class ContinueButton extends StatelessWidget {
-  const ContinueButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Material _continueButton(BuildContext context) {
     return Material(
       child: InkWell(
         onTap: () {
+          if (!allFieldsAreFilled()) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Please fill all fields!'),
+              ),
+            );
+            return;
+          }
+
+          if (!bothPasswordFieldsMatch()) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Password do not match!'),
+              ),
+            );
+            return;
+          }
+
+          // add the user to the DB while also logs it in
+          signUp(context);
+
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => HomeScreen(),
@@ -196,5 +168,110 @@ class ContinueButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future signUp(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailTextFieldController.text,
+        password: emailTextFieldController.text,
+      );
+
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailTextFieldController.text,
+        password: emailTextFieldController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => SimpleDialog(
+          title: Text('Error'),
+          contentPadding: EdgeInsets.all(20),
+          children: [
+            Text(e.message!),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  TextField _confirmPasswordTextField() {
+    return TextField(
+      controller: confirmPasswordTextFieldController,
+      textAlignVertical: TextAlignVertical.center,
+      obscureText: true,
+      decoration: InputDecoration(
+        labelText: 'Confirm Password',
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        prefixIcon: Icon(Icons.password),
+      ),
+    );
+  }
+
+  TextField _passwordTextField() {
+    return TextField(
+      controller: passwordTextFieldController,
+      textAlignVertical: TextAlignVertical.center,
+      obscureText: true,
+      decoration: InputDecoration(
+        labelText: 'Password',
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        prefixIcon: Icon(Icons.password),
+      ),
+    );
+  }
+
+  TextField _nameTextField() {
+    return TextField(
+      controller: nameTextFieldController,
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+        labelText: 'Name',
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        prefixIcon: Icon(Icons.person),
+      ),
+    );
+  }
+
+  TextField _emailTextField() {
+    return TextField(
+      controller: emailTextFieldController,
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+        labelText: 'Email',
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        prefixIcon: Icon(Icons.email),
+      ),
+    );
+  }
+
+  bool allFieldsAreFilled() {
+    return !(emailTextFieldController.text.isEmpty ||
+        nameTextFieldController.text.isEmpty ||
+        passwordTextFieldController.text.isEmpty ||
+        confirmPasswordTextFieldController.text.isEmpty);
+  }
+
+  bool bothPasswordFieldsMatch() {
+    return passwordTextFieldController.text ==
+        confirmPasswordTextFieldController.text;
   }
 }

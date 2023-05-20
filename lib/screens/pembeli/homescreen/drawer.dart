@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/history.dart';
 import 'package:upj_digital_canteen/login.dart';
@@ -72,12 +73,8 @@ class DrawerView extends StatelessWidget {
           DrawerMenu(
             icon: Icon(Icons.logout),
             menuName: 'Log out',
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => LoginScreen(),
-                ),
-              );
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
             },
           ),
           SizedBox(
