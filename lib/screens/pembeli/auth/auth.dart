@@ -22,48 +22,64 @@ class _UserAuthScreenState extends State<UserAuthScreen> {
   bool isLogin = true;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 75,
-              ),
-              Center(
-                child: LoginScreenDecorator(),
-              ),
-              SizedBox(
-                height: 35,
-              ),
-              isLogin
-                  ? UserLoginForms(
-                      emailTextEditingController: emailTextFieldController,
-                      passwordTextEditingController:
-                          passwordTextFieldController,
-                    )
-                  : UserSignUpForm(
-                      emailTextFieldController: emailTextFieldController,
-                      passwordTextFieldController: passwordTextFieldController,
-                      nameTextFieldController: nameTextFieldController,
-                      confirmPasswordTextFieldController:
-                          confirmPasswordTextFieldController,
-                    ),
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          debugPrint('user is loggin in');
+          return HomeScreen();
+        }
+        debugPrint('user has not logged in/signed out');
+
+        return Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _proceedAuthButton(),
-                  _switchAuthTypeButton(),
+                  SizedBox(
+                    height: 75,
+                  ),
+                  Center(
+                    child: LoginScreenDecorator(),
+                  ),
+                  SizedBox(
+                    height: 35,
+                  ),
+                  isLogin
+                      ? UserLoginForms(
+                          emailTextEditingController: emailTextFieldController,
+                          passwordTextEditingController:
+                              passwordTextFieldController,
+                        )
+                      : UserSignUpForm(
+                          emailTextFieldController: emailTextFieldController,
+                          passwordTextFieldController:
+                              passwordTextFieldController,
+                          nameTextFieldController: nameTextFieldController,
+                          confirmPasswordTextFieldController:
+                              confirmPasswordTextFieldController,
+                        ),
+                  SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _proceedAuthButton(),
+                      _switchAuthTypeButton(),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  Center(
+                    child: returnToWelcomePageButton(),
+                  )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -136,8 +152,6 @@ class _UserAuthScreenState extends State<UserAuthScreen> {
       _showErrorMessage(e);
       return;
     }
-
-    _switchToUserHomeScreen();
   }
 
   Future<void> _loginUser() async {
@@ -150,8 +164,6 @@ class _UserAuthScreenState extends State<UserAuthScreen> {
       _showErrorMessage(e);
       return;
     }
-
-    _switchToUserHomeScreen();
   }
 
   void _showErrorMessage(FirebaseAuthException e) {
@@ -261,6 +273,23 @@ class _UserAuthScreenState extends State<UserAuthScreen> {
   bool bothPasswordFieldMatch() {
     return passwordTextFieldController.text ==
         confirmPasswordTextFieldController.text;
+  }
+}
+
+class returnToWelcomePageButton extends StatelessWidget {
+  const returnToWelcomePageButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: Text(
+        'Masuk sebagai penjual',
+        style: TextStyle(fontSize: 15),
+      ),
+      onPressed: () {},
+    );
   }
 }
 
