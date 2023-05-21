@@ -406,10 +406,10 @@ class _FoodCardBottomSheetState extends State<FoodCardBottomSheet> {
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    // MerchantData().updateFood(widget.foodId, {
-                    //   'name': foodNameTextEditingController.text,
-                    //   'price': priceTextEditingController.text,
-                    // });
+                    MerchantData().updateFood(widget.foodId, {
+                      'name': foodNameTextEditingController.text,
+                      'price': int.parse(priceTextEditingController.text),
+                    });
                     Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
