@@ -426,6 +426,21 @@ class _FoodCardBottomSheetState extends State<FoodCardBottomSheet> {
                   ),
                 ),
               ),
+              Center(
+                child: TextButton(
+                  onPressed: () async {
+                    MerchantData().deleteFood(widget.foodId);
+                    Navigator.pop(context);
+                  },
+                  style: TextButton.styleFrom(
+                    minimumSize: Size(350, 40),
+                  ),
+                  child: Text(
+                    'Hapus menu',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

@@ -59,4 +59,13 @@ class MerchantData {
         .doc(foodId)
         .update(data);
   }
+
+  Future deleteFood(String foodId) async {
+    await firebaseInstance
+        .collection('merchants')
+        .doc(Auth().currentUser!.uid)
+        .collection('foods')
+        .doc(foodId)
+        .delete();
+  }
 }
