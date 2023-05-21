@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -168,6 +169,22 @@ class _AddMenuBottomSheetState extends State<AddMenuBottomSheet> {
     });
   }
 
+  Future uploadFileAndStoreInMerchantCollection() async {
+    String fileName = image!.path.split(Platform.pathSeparator).last;
+    final path = 'menu_photos/$fileName}';
+    final ref = FirebaseStorage.instance.ref().child(path);
+    final UploadTask uploadTask = ref.putFile(image!);
+
+    final snapshot = await uploadTask.whenComplete(() {});
+    final String urlDownload = await snapshot.ref.getDownloadURL();
+
+    MerchantData().addNewFood(
+      foodNameTextEditingController.text,
+      int.parse(priceTextEditingController.text),
+      urlDownload,
+    );
+  }
+
   final foodNameTextEditingController = TextEditingController();
   final priceTextEditingController = TextEditingController();
 
@@ -234,7 +251,7 @@ class _AddMenuBottomSheetState extends State<AddMenuBottomSheet> {
               ),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (foodNameTextEditingController.text.isEmpty ||
                         priceTextEditingController.text.isEmpty ||
                         image == null) {
@@ -254,7 +271,10 @@ class _AddMenuBottomSheetState extends State<AddMenuBottomSheet> {
                           ],
                         ),
                       );
+                      return;
                     }
+
+                    uploadFileAndStoreInMerchantCollection();
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(350, 40),

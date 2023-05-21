@@ -38,4 +38,16 @@ class MerchantData {
         .collection('foods')
         .snapshots();
   }
+
+  void addNewFood(String name, int price, String imageUrl) {
+    firebaseInstance
+        .collection('merchants')
+        .doc(Auth().currentUser!.uid)
+        .collection('foods')
+        .add({
+      'name': name,
+      'photo_url': imageUrl,
+      'price': price,
+    });
+  }
 }
