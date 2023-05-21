@@ -1,67 +1,109 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upj_digital_canteen/constants.dart';
+import 'package:upj_digital_canteen/firestore.dart';
 import 'package:upj_digital_canteen/models.dart';
 import 'package:upj_digital_canteen/states.dart';
 import 'package:upj_digital_canteen/temp_db.dart';
 
-class RestoFoodList extends StatefulWidget {
-  const RestoFoodList({
+class RestoList extends StatefulWidget {
+  const RestoList({
     super.key,
   });
 
   @override
-  State<RestoFoodList> createState() => _RestoFoodListState();
+  State<RestoList> createState() => _RestoListState();
 }
 
-class _RestoFoodListState extends State<RestoFoodList> {
+class _RestoListState extends State<RestoList> {
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int restoIndex) {
-          return Padding(
-            padding: EdgeInsets.only(bottom: 25),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 25.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    FoodApi.restoName[restoIndex],
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: SizedBox(
-                      height: 200,
-                      child: ListView.builder(
-                        itemCount: 3,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, foodIndex) => Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: FoodCard(
-                            foodName: FoodApi.restoData[restoIndex][foodIndex]
-                                [0],
-                            price: int.parse(
-                                FoodApi.restoData[restoIndex][foodIndex][1]),
-                            imageUrl: FoodApi.foodImgPath[restoIndex]
-                                [foodIndex],
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
+    return StreamBuilder(
+        stream: MerchantData().getRestoCollectionSnapshot(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return SliverToBoxAdapter(
+              child: Center(
+                child: Text('No resto data'),
               ),
-            ),
+            );
+          }
+
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int restoIndex) {
+              final documentSnapshot = snapshot.data!.docs[restoIndex];
+              return Padding(
+                padding: EdgeInsets.only(bottom: 25),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: RestoContainer(
+                    restoId: documentSnapshot.id,
+                    restoName: documentSnapshot['name'],
+                    foodData: snapshot.data!.docs,
+                  ),
+                ),
+              );
+            }, childCount: snapshot.data!.docs.length),
           );
-        },
-        childCount: 3,
-      ),
+        });
+  }
+}
+
+class RestoContainer extends StatelessWidget {
+  RestoContainer({
+    super.key,
+    required this.restoName,
+    required this.foodData,
+    required this.restoId,
+  });
+
+  final String restoName;
+  final String restoId;
+  final dynamic foodData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          restoName,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: SizedBox(
+            height: 200,
+            child: StreamBuilder(
+              stream: MerchantData().getRestoFoodCollectionSnapshot(restoId),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, foodIndex) {
+                    final documentSnapshot = snapshot.data!.docs[foodIndex];
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 20.0),
+                      child: FoodCard(
+                        foodName: documentSnapshot['name'],
+                        price: documentSnapshot['price'],
+                        imageUrl: documentSnapshot['photo_url'],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        )
+      ],
     );
   }
 }

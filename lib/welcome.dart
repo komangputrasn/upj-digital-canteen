@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/constants.dart';
-import 'package:upj_digital_canteen/screens/pembeli/auth/auth.dart';
+import 'package:upj_digital_canteen/screens/pembeli/auth/user_auth.dart';
 import 'package:upj_digital_canteen/screens/pembeli/auth/login.dart';
-import 'package:upj_digital_canteen/screens/penjual/auth/auth.dart';
+import 'package:upj_digital_canteen/screens/penjual/auth/merchant_auth.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});

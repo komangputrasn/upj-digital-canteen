@@ -31,12 +31,21 @@ class MerchantData {
         .collection('foods');
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getFoodCollectionSnapshot() {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getRestoCollectionSnapshot() {
+    return firebaseInstance.collection('merchants').snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getRestoFoodCollectionSnapshot(
+      String restoId) {
     return firebaseInstance
         .collection('merchants')
-        .doc(Auth().currentUser!.uid)
+        .doc(restoId)
         .collection('foods')
         .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getFoodCollectionSnapshot() {
+    return firebaseInstance.collection('merchants').snapshots();
   }
 
   void addNewFood(String name, int price, String imageUrl) {

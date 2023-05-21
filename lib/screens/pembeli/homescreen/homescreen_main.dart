@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
             SearchBar(),
             AdvertCarousel(),
             PickUp(),
-            RestoFoodList(),
+            RestoList(),
           ],
         ),
         floatingActionButton: FloatingActionButton(

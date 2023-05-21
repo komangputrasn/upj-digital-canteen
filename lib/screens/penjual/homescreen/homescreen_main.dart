@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:upj_digital_canteen/auth.dart';
 import 'package:upj_digital_canteen/firestore.dart';
 import 'package:upj_digital_canteen/screens/penjual/settings/settings_main.dart';
 import 'dart:io';
@@ -34,7 +35,8 @@ class MerchantHomeScreen extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.all(20),
         child: StreamBuilder(
-          stream: MerchantData().getFoodCollectionSnapshot(),
+          stream: MerchantData()
+              .getRestoFoodCollectionSnapshot(Auth().currentUser!.uid),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasData) {
               return GridView.builder(
@@ -421,7 +423,7 @@ class _FoodCardBottomSheetState extends State<FoodCardBottomSheet> {
                     ),
                   ),
                   child: Text(
-                    'Tambah Menu',
+                    'Simpan menu',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),

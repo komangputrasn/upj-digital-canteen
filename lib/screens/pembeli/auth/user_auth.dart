@@ -5,6 +5,7 @@ import 'package:upj_digital_canteen/constants.dart';
 import 'package:upj_digital_canteen/firestore.dart';
 import 'package:upj_digital_canteen/screens/pembeli/auth/signup.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
+import 'package:upj_digital_canteen/welcome.dart';
 
 class UserAuthScreen extends StatefulWidget {
   UserAuthScreen({super.key});
@@ -288,7 +289,11 @@ class returnToWelcomePageButton extends StatelessWidget {
         'Masuk sebagai penjual',
         style: TextStyle(fontSize: 15),
       ),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => WelcomeScreen()),
+        );
+      },
     );
   }
 }
