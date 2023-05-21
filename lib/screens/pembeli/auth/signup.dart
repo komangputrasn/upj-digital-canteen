@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:upj_digital_canteen/auth.dart';
 import 'package:upj_digital_canteen/constants.dart';
+import 'package:upj_digital_canteen/firestore.dart';
+import 'package:upj_digital_canteen/screens/pembeli/auth/login.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
-import 'package:upj_digital_canteen/login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupPage extends StatelessWidget {
   SignupPage({super.key});
@@ -89,7 +91,8 @@ class SignupPage extends StatelessWidget {
     return Material(
       child: InkWell(
         onTap: () {
-          Navigator.of(context).push(
+          Navigator.push(
+            context,
             MaterialPageRoute(
               builder: (context) => LoginScreen(),
             ),
@@ -120,7 +123,7 @@ class SignupPage extends StatelessWidget {
   Material _continueButton(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () {
+        onTap: () async {
           if (!allFieldsAreFilled()) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -139,14 +142,34 @@ class SignupPage extends StatelessWidget {
             return;
           }
 
-          // add the user to the DB while also logs it in
-          signUp(context);
+          try {
+            await Auth().createUserWithEmailAndPassword(
+              email: emailTextFieldController.text,
+              password: passwordTextFieldController.text,
+            );
 
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(),
-            ),
-          );
+            UserData().addUserToCollection(
+                uid: Auth().currentUser!.uid,
+                username: nameTextFieldController.text,
+                role: 'user');
+          } on FirebaseAuthException catch (e) {
+            showDialog(
+              context: context,
+              builder: (context) => SimpleDialog(
+                title: Text('Error'),
+                contentPadding: EdgeInsets.all(20),
+                children: [
+                  Text(e.message!),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Close'),
+                  ),
+                ],
+              ),
+            );
+          }
         },
         child: Container(
           decoration: BoxDecoration(
@@ -168,37 +191,6 @@ class SignupPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future signUp(BuildContext context) async {
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailTextFieldController.text,
-        password: emailTextFieldController.text,
-      );
-
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailTextFieldController.text,
-        password: emailTextFieldController.text,
-      );
-    } on FirebaseAuthException catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) => SimpleDialog(
-          title: Text('Error'),
-          contentPadding: EdgeInsets.all(20),
-          children: [
-            Text(e.message!),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
-            ),
-          ],
-        ),
-      );
-    }
   }
 
   TextField _confirmPasswordTextField() {

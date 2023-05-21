@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/history.dart';
-import 'package:upj_digital_canteen/login.dart';
 import 'package:upj_digital_canteen/profile.dart';
 
 class DrawerView extends StatelessWidget {

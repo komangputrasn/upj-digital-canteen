@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/constants.dart';
+import 'package:upj_digital_canteen/screens/pembeli/auth/signup.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
-import 'package:upj_digital_canteen/signup.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -110,7 +110,8 @@ class LoginScreen extends StatelessWidget {
                 Material(
                   child: InkWell(
                     onTap: () {
-                      Navigator.of(context).push(
+                      Navigator.push(
+                        context,
                         MaterialPageRoute(
                           builder: (context) => SignupPage(),
                         ),
