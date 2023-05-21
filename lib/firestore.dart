@@ -50,4 +50,13 @@ class MerchantData {
       'price': price,
     });
   }
+
+  void updateFood(String foodId, Map<Object, Object?> data) {
+    firebaseInstance
+        .collection('merchants')
+        .doc(Auth().currentUser!.uid)
+        .collection('foods')
+        .doc(foodId)
+        .update(data);
+  }
 }

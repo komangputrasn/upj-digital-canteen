@@ -48,6 +48,7 @@ class MerchantHomeScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final documentSnapshot = snapshot.data!.docs[index];
                   return FoodCard(
+                    id: documentSnapshot.id,
                     foodName: documentSnapshot['name'],
                     price: documentSnapshot['price'],
                     imageUrl: documentSnapshot['photo_url'],
@@ -94,11 +95,13 @@ class FoodCard extends StatelessWidget {
     required this.foodName,
     required this.price,
     required this.imageUrl,
+    required this.id,
   });
 
   final String foodName;
   final int price;
   final String imageUrl;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +115,18 @@ class FoodCard extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (context) => FoodCardBottomSheet(
+                foodName: foodName,
+                price: price,
+                imageUrl: imageUrl,
+                foodId: id,
+              ),
+            );
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -275,6 +289,128 @@ class _AddMenuBottomSheetState extends State<AddMenuBottomSheet> {
                     }
 
                     uploadFileAndStoreInMerchantCollection();
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(350, 40),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(50),
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    'Tambah Menu',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FoodCardBottomSheet extends StatefulWidget {
+  FoodCardBottomSheet({
+    super.key,
+    required this.foodName,
+    required this.price,
+    required this.foodId,
+    required this.imageUrl,
+  });
+
+  final String foodName;
+  final int price;
+  final String foodId;
+  final String imageUrl;
+
+  @override
+  State<FoodCardBottomSheet> createState() => _FoodCardBottomSheetState();
+}
+
+class _FoodCardBottomSheetState extends State<FoodCardBottomSheet> {
+  TextEditingController foodNameTextEditingController = TextEditingController();
+  TextEditingController priceTextEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    foodNameTextEditingController.text = widget.foodName;
+    priceTextEditingController.text = widget.price.toString();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Edit menu',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                controller: foodNameTextEditingController,
+                decoration: InputDecoration(
+                  labelText: 'Nama makanan',
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: priceTextEditingController,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(
+                  labelText: 'Harga',
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                ),
+              ),
+              SizedBox(
+                height: 35,
+              ),
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(widget.imageUrl),
+                    backgroundColor: Colors.pink,
+                    maxRadius: 35,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('Pick image'),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 70,
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    // MerchantData().updateFood(widget.foodId, {
+                    //   'name': foodNameTextEditingController.text,
+                    //   'price': priceTextEditingController.text,
+                    // });
+                    Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(350, 40),
