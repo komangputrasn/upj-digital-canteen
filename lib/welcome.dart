@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/constants.dart';
+import 'package:upj_digital_canteen/screens/pembeli/auth/auth.dart';
 import 'package:upj_digital_canteen/screens/pembeli/auth/login.dart';
 import 'package:upj_digital_canteen/screens/penjual/auth/auth.dart';
 
@@ -80,16 +81,14 @@ class GradientDecorator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        height: 617,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: FractionalOffset.topCenter,
-            end: FractionalOffset.bottomCenter,
-            colors: [Colors.transparent, Colors.black45],
-            stops: [0.0, 4],
-          ),
+    return Container(
+      height: 617,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: FractionalOffset.topCenter,
+          end: FractionalOffset.bottomCenter,
+          colors: [Colors.transparent, Colors.black45],
+          stops: [0.0, 4],
         ),
       ),
     );
@@ -106,7 +105,7 @@ class ContinueAsUserButton extends StatelessWidget {
     return Material(
       child: InkWell(
         onTap: () {
-          _goToLoginScreen(context);
+          goToUserAuthScreen(context);
         },
         child: Container(
           height: 249,
@@ -139,10 +138,10 @@ class ContinueAsUserButton extends StatelessWidget {
     );
   }
 
-  void _goToLoginScreen(BuildContext context) {
+  void goToUserAuthScreen(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => LoginScreen(),
+        builder: (context) => UserAuthScreen(),
       ),
     );
   }

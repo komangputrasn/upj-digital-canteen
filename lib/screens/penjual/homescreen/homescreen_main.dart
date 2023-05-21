@@ -428,7 +428,7 @@ class _FoodCardBottomSheetState extends State<FoodCardBottomSheet> {
               ),
               Center(
                 child: TextButton(
-                  onPressed: () async {
+                  onPressed: () {
                     MerchantData().deleteFood(widget.foodId);
                     Navigator.pop(context);
                   },

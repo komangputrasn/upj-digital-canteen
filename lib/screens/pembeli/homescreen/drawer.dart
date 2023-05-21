@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/auth.dart';
 import 'package:upj_digital_canteen/history.dart';
 import 'package:upj_digital_canteen/profile.dart';
+import 'package:upj_digital_canteen/screens/pembeli/auth/auth.dart';
 
 class DrawerView extends StatelessWidget {
   const DrawerView({
@@ -74,8 +75,10 @@ class DrawerView extends StatelessWidget {
             icon: Icon(Icons.logout),
             menuName: 'Log out',
             onTap: () async {
-              print(Auth().currentUser?.email);
-              await FirebaseAuth.instance.signOut();
+              debugPrint('user email: ${Auth().currentUser?.email}');
+              signOutUser();
+              returnToUserAuthPage(context);
+              debugPrint('user email: ${Auth().currentUser?.email}');
             },
           ),
           SizedBox(
@@ -89,6 +92,18 @@ class DrawerView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void returnToUserAuthPage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: ((context) => UserAuthScreen()),
+      ),
+    );
+  }
+
+  Future<void> signOutUser() async {
+    await FirebaseAuth.instance.signOut();
   }
 }
 
