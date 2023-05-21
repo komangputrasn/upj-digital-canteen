@@ -14,8 +14,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:upj_digital_canteen/auth.dart';
+import 'package:upj_digital_canteen/screens/pembeli/auth/login.dart';
+import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
 import 'package:upj_digital_canteen/screens/penjual/auth/auth.dart';
 import 'package:upj_digital_canteen/screens/penjual/homescreen/homescreen_main.dart';
+import 'package:upj_digital_canteen/welcome.dart';
 import 'states.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -41,45 +45,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: createMaterialColor(Color(0xffcd042e)),
-          fontFamily: GoogleFonts.poppins().fontFamily,
-        ),
-        home: StreamBuilder<User?>(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return MerchantHomeScreen();
-              } else {
-                return MerchantAuthScreen();
-              }
-            })
-        // home: StreamBuilder<User?>(
-        //   stream: FirebaseAuth.instance.authStateChanges(),
-        //   builder: (context, snapshot) {
-        //     if (snapshot.connectionState == ConnectionState.active) {
-        //       User? user = snapshot.data;
-        //       if (user == null) {
-        //         // User is not signed in, show login screen
-        //         return SignupPage();
-        //       } else {
-        //         // User is signed in, show main screen
-        //         return HomeScreen();
-        //       }
-        //     } else {
-        //       // Show loading indicator
-        //       return const Scaffold(
-        //         body: Center(
-        //           child: CircularProgressIndicator(),
-        //         ),
-        //       );
-        //     }
-        //   },
-        // ),
-        );
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: createMaterialColor(Color(0xffcd042e)),
+        fontFamily: GoogleFonts.poppins().fontFamily,
+      ),
+      home: WelcomeScreen(),
+    );
   }
 }
+
+//  StreamBuilder<User?>(
+//         stream: FirebaseAuth.instance.authStateChanges(),
+//         builder: (context, snapshot) {
+//           if (snapshot.hasData) {
+//             return HomeScreen();
+//           }
+//           return LoginScreen();
+//         },
 
 MaterialColor createMaterialColor(Color color) {
   List strengths = <double>[.05];

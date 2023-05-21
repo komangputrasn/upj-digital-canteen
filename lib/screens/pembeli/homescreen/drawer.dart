@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:upj_digital_canteen/auth.dart';
 import 'package:upj_digital_canteen/history.dart';
 import 'package:upj_digital_canteen/profile.dart';
 
@@ -73,6 +74,7 @@ class DrawerView extends StatelessWidget {
             icon: Icon(Icons.logout),
             menuName: 'Log out',
             onTap: () async {
+              print(Auth().currentUser?.email);
               await FirebaseAuth.instance.signOut();
             },
           ),
