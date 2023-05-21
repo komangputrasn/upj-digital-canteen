@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:upj_digital_canteen/screens/penjual/settings/settings_main.dart';
 
 class MerchantHomeScreen extends StatelessWidget {
   const MerchantHomeScreen({super.key});
@@ -9,7 +10,13 @@ class MerchantHomeScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MerchantSettingsScreen(),
+                ),
+              );
+            },
             icon: Icon(Icons.settings),
           ),
           IconButton(

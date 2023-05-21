@@ -14,8 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
-import 'package:upj_digital_canteen/screens/penjual/auth/login.dart';
+import 'package:upj_digital_canteen/screens/penjual/auth/auth.dart';
 import 'package:upj_digital_canteen/screens/penjual/homescreen/homescreen_main.dart';
 import 'states.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -53,7 +52,7 @@ class MyApp extends StatelessWidget {
               if (snapshot.hasData) {
                 return MerchantHomeScreen();
               } else {
-                return MerchantLoginScreen();
+                return MerchantAuthScreen();
               }
             })
         // home: StreamBuilder<User?>(

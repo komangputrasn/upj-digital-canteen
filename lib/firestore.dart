@@ -5,13 +5,21 @@ class UserData {
   void addUserToCollection({
     required String uid,
     required String username,
-    required String role,
   }) {
-    firebaseInstance.collection('users').doc(uid).set(
-      {
-        'name': username,
-        'role': role,
-      },
+    firebaseInstance.collection('users').doc(uid).set({
+      'name': username,
+    });
+  }
+}
+
+class MerchantData {
+  final firebaseInstance = FirebaseFirestore.instance;
+  void addMerchantToCollection({
+    required String uid,
+    required String username,
+  }) {
+    firebaseInstance.collection('merchants').doc(uid).set(
+      {'name': username},
     );
   }
 }
