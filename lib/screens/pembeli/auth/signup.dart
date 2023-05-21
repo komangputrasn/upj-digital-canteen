@@ -149,9 +149,9 @@ class SignupPage extends StatelessWidget {
             );
 
             UserData().addUserToCollection(
-                uid: Auth().currentUser!.uid,
-                username: nameTextFieldController.text,
-                role: 'user');
+              uid: Auth().currentUser!.uid,
+              username: nameTextFieldController.text,
+            );
           } on FirebaseAuthException catch (e) {
             showDialog(
               context: context,
