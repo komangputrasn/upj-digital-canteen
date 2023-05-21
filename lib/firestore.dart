@@ -11,6 +11,16 @@ class UserData {
       'name': username,
     });
   }
+
+  Future<String> getCurrentUsername() async {
+    var snapshot = await firebaseInstance
+        .collection('users')
+        .doc(Auth().currentUser!.uid)
+        .get();
+
+    var username = await snapshot.data()!['name'];
+    return username;
+  }
 }
 
 class MerchantData {

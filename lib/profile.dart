@@ -1,12 +1,37 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:upj_digital_canteen/auth.dart';
 import 'package:upj_digital_canteen/constants.dart';
+import 'package:upj_digital_canteen/firestore.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final nameTextFieldController = TextEditingController();
+  final emailTextFieldController = TextEditingController();
+  final oldPasswordTextFieldController = TextEditingController();
+  final newPasswordTextFieldController = TextEditingController();
+  final confirmPasswordTextFieldController = TextEditingController();
+
+  late Future<String> currentUsername;
+
+  @override
+  void initState() {
+    super.initState();
+    emailTextFieldController.text = Auth().currentUser!.email!;
+    currentUsername = UserData().getCurrentUsername();
+    currentUsername.then((value) {
+      nameTextFieldController.text = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +75,28 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(
                     height: 15,
                   ),
-                  Text(
-                    'Nabiel Fauzan',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )
+                  FutureBuilder<String>(
+                    future: currentUsername,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return Text(
+                          snapshot.data!,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      } else {
+                        return Text(
+                          'Your profile',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
@@ -63,23 +106,16 @@ class ProfileScreen extends StatelessWidget {
                 runSpacing: 15,
                 children: [
                   TextFormField(
+                    controller: nameTextFieldController,
                     decoration: InputDecoration(
                       labelText: 'Name',
                       floatingLabelBehavior: FloatingLabelBehavior.auto,
                     ),
-                    initialValue: 'Nabiel Fauzan',
                   ),
                   TextFormField(
+                    controller: emailTextFieldController,
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    ),
-                    initialValue: 'nabielfauzan@gmail.com',
-                  ),
-                  TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Old password',
                       floatingLabelBehavior: FloatingLabelBehavior.auto,
                     ),
                   ),
@@ -96,6 +132,9 @@ class ProfileScreen extends StatelessWidget {
                       labelText: 'Confirm new password',
                       floatingLabelBehavior: FloatingLabelBehavior.auto,
                     ),
+                  ),
+                  SizedBox(
+                    height: 120,
                   ),
                   Center(
                     child: Material(
@@ -142,8 +181,6 @@ class ProfilePicture extends StatefulWidget {
 }
 
 class _ProfilePictureState extends State<ProfilePicture> {
-  XFile? imageFile;
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -152,37 +189,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
           minRadius: 45,
           backgroundColor: Colors.pink,
         ),
-        Positioned(
-          top: 55,
-          left: 220,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: Colors.white,
-            ),
-            width: 35,
-            height: 35,
-            child: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: _getFromGallery,
-            ),
-          ),
-        ),
       ],
     );
-  }
-
-  Future _getFromGallery() async {
-    print('test');
-
-    XFile? pickedFile = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-    );
-
-    if (pickedFile != null) {
-      setState(() {
-        imageFile = XFile(pickedFile.path);
-      });
-    }
   }
 }
