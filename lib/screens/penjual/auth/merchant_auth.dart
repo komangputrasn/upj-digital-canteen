@@ -211,6 +211,7 @@ class MerchantLoginForm extends StatelessWidget {
         ),
         SizedBox(height: 18),
         AuthTextField(
+          hideInput: true,
           nameTextEditingController: nameTextEditingController,
           name: 'Password',
           icon: Icons.password,
@@ -254,15 +255,18 @@ class AuthTextField extends StatelessWidget {
     required this.nameTextEditingController,
     required this.name,
     required this.icon,
+    this.hideInput,
   });
 
   final TextEditingController nameTextEditingController;
   final String name;
   final IconData icon;
+  final bool? hideInput;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      obscureText: hideInput ?? false,
       controller: nameTextEditingController,
       textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
@@ -300,15 +304,6 @@ class HeaderDecoration extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class SignUpForms extends StatelessWidget {
-  const SignUpForms({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
 
@@ -352,6 +347,7 @@ class MerchantSignUpForm extends StatelessWidget {
         ),
         SizedBox(height: 18),
         AuthTextField(
+          hideInput: true,
           nameTextEditingController: passwordTextEditingController,
           name: 'Password',
           icon: Icons.password,
