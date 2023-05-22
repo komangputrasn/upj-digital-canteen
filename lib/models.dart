@@ -1,21 +1,17 @@
 class FoodModel {
-  FoodModel(this.name, this.harga, this.imageUrl);
+  FoodModel(this.name, this.harga, this.imageUrl, this.foodId, this.restoId);
 
   String name;
   int harga;
   String imageUrl;
+  String foodId;
+  String restoId;
 
-  String get getName {
-    return name;
-  }
-
-  int get getHarga {
-    return harga;
-  }
-
-  String get getImageUrl {
-    return imageUrl;
-  }
+  int get getHarga => harga;
+  String get getName => name;
+  String get getImageUrl => imageUrl;
+  String get getFoodId => foodId;
+  String get getRestoId => restoId;
 }
 
 class ConfirmedFoodModel {

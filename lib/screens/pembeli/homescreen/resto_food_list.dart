@@ -95,6 +95,8 @@ class RestoContainer extends StatelessWidget {
                         foodName: documentSnapshot['name'],
                         price: documentSnapshot['price'],
                         imageUrl: documentSnapshot['photo_url'],
+                        restoId: restoId,
+                        foodId: documentSnapshot.id,
                       ),
                     );
                   },
@@ -114,11 +116,15 @@ class FoodCard extends StatelessWidget {
     required this.foodName,
     required this.price,
     required this.imageUrl,
+    required this.foodId,
+    required this.restoId,
   });
 
   final String foodName;
   final int price;
   final String imageUrl;
+  final String foodId;
+  final String restoId;
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +145,12 @@ class FoodCard extends StatelessWidget {
             showModalBottomSheet(
               context: context,
               builder: (context) => FoodCardModalBottomSheet(
-                  imageUrl: imageUrl, foodName: foodName, price: price),
+                imageUrl: imageUrl,
+                foodName: foodName,
+                price: price,
+                restoId: restoId,
+                foodId: foodId,
+              ),
             );
           },
           child: Column(
@@ -180,10 +191,14 @@ class FoodCardModalBottomSheet extends StatefulWidget {
     required this.imageUrl,
     required this.foodName,
     required this.price,
+    required this.foodId,
+    required this.restoId,
   });
 
   final String imageUrl;
   final String foodName;
+  final String foodId;
+  final String restoId;
   final int price;
 
   @override
@@ -244,6 +259,8 @@ class _FoodCardModalBottomSheetState extends State<FoodCardModalBottomSheet> {
                           widget.foodName,
                           widget.price,
                           widget.imageUrl,
+                          widget.foodId,
+                          widget.restoId,
                         ),
                       );
                       Navigator.pop(context);

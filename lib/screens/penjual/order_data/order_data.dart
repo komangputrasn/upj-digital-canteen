@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:upj_digital_canteen/screens/penjual/order_data/on_progress_view.dart';
 
 class OrderDataScreen extends StatefulWidget {
   const OrderDataScreen({super.key});
@@ -47,9 +48,7 @@ class _OrderDataScreenState extends State<OrderDataScreen>
               child: TabBarView(
                 controller: tabController,
                 children: [
-                  Center(
-                    child: Text('Page 1'),
-                  ),
+                  OnProgressTab(),
                   Center(
                     child: Text('Page 2'),
                   ),
