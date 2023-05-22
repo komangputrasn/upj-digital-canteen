@@ -4,6 +4,7 @@ import 'package:upj_digital_canteen/auth.dart';
 import 'package:upj_digital_canteen/firestore.dart';
 import 'package:upj_digital_canteen/screens/penjual/homescreen/add_menu_bottom_sheet.dart';
 import 'package:upj_digital_canteen/screens/penjual/homescreen/food_card.dart';
+import 'package:upj_digital_canteen/screens/penjual/order_data/order_data.dart';
 import 'package:upj_digital_canteen/screens/penjual/settings/settings_main.dart';
 
 class MerchantHomeScreen extends StatelessWidget {
@@ -64,7 +65,13 @@ class MerchantHomeScreen extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => OrderDataScreen(),
+                    ),
+                  );
+                },
                 icon: Icon(
                   Icons.restaurant,
                   color: Theme.of(context).primaryColor,
