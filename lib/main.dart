@@ -10,18 +10,13 @@
 /// 9. unfocus textfield when dismissing keyboard (done)
 /// TODO: make sure there are no duplicates name for foods
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:upj_digital_canteen/auth.dart';
-import 'package:upj_digital_canteen/screens/pembeli/auth/login.dart';
-import 'package:upj_digital_canteen/screens/pembeli/homescreen/homescreen_main.dart';
-import 'package:upj_digital_canteen/screens/penjual/auth/merchant_auth.dart';
-import 'package:upj_digital_canteen/screens/penjual/homescreen/homescreen_main.dart';
 import 'package:upj_digital_canteen/welcome.dart';
+
 import 'states.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

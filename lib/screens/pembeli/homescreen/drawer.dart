@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/auth.dart';
 import 'package:upj_digital_canteen/history.dart';
-import 'package:upj_digital_canteen/profile.dart';
+import 'package:upj_digital_canteen/screens/pembeli/profile/profile.dart';
 import 'package:upj_digital_canteen/screens/pembeli/about%20us/about_us.dart';
 import 'package:upj_digital_canteen/screens/pembeli/auth/user_auth.dart';
 import 'package:upj_digital_canteen/welcome.dart';

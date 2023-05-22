@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:upj_digital_canteen/auth.dart';
 import 'package:upj_digital_canteen/constants.dart';
@@ -17,7 +18,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final nameTextFieldController = TextEditingController();
   final emailTextFieldController = TextEditingController();
-  final oldPasswordTextFieldController = TextEditingController();
   final newPasswordTextFieldController = TextEditingController();
   final confirmPasswordTextFieldController = TextEditingController();
 
@@ -31,6 +31,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     currentUsername.then((value) {
       nameTextFieldController.text = value;
     });
+  }
+
+  bool allFieldsAreFilled() {
+    return nameTextFieldController.text.isNotEmpty &&
+        emailTextFieldController.text.isNotEmpty &&
+        newPasswordTextFieldController.text.isNotEmpty &&
+        confirmPasswordTextFieldController.text.isNotEmpty;
+  }
+
+  bool bothPasswordFieldsMatch() {
+    return newPasswordTextFieldController.text ==
+        confirmPasswordTextFieldController.text;
   }
 
   @override
@@ -120,6 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   TextFormField(
+                    controller: newPasswordTextFieldController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'New password',
@@ -127,6 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   TextFormField(
+                    controller: confirmPasswordTextFieldController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Confirm new password',
@@ -139,7 +153,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Center(
                     child: Material(
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          if (!allFieldsAreFilled()) {
+                            showSnackBar(context, 'Please fill all fields!');
+                            return;
+                          }
+
+                          if (!bothPasswordFieldsMatch()) {
+                            showSnackBar(context, 'Password do not match!');
+                            return;
+                          }
+
+                          try {
+                            await Auth().updateUsernamePassword(
+                              emailTextFieldController.text,
+                              newPasswordTextFieldController.text,
+                            );
+                          } on FirebaseAuthException catch (e) {
+                            showErrorMessage(e);
+                          }
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
@@ -166,6 +199,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
+  void showErrorMessage(FirebaseAuthException e) {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text('Error'),
+        contentPadding: EdgeInsets.all(20),
+        children: [
+          Text(e.message!),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Close'),
+          ),
+        ],
       ),
     );
   }
