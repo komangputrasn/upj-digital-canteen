@@ -5,7 +5,6 @@ import 'package:upj_digital_canteen/screens/pembeli/homescreen/app_bar.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/drawer.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/pick_up_button.dart';
 import 'package:upj_digital_canteen/screens/pembeli/homescreen/resto_food_list.dart';
-import 'package:upj_digital_canteen/screens/pembeli/homescreen/search_bar.dart';
 
 import '../../../constants.dart';
 
@@ -33,7 +32,7 @@ class HomeScreen extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             HomeAppBar(),
-            SearchBar(),
+            // SearchBar(),
             AdvertCarousel(),
             PickUp(),
             RestoList(),
